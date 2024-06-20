@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Disease Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
+</head>
+<body>
+    <div class="header">
+        <div class="sub_header1">
+            <div class="welcome"">
+                <h1>Welcome {{ session['username'] }}</h1>
+            </div>
+            <div>
+                <h1>Disease Predictor</h1>
+            </div>
+            <div>
+                <p class="logout-button"><a href="{{ url_for('logout') }}"">Logout</a></p>
+            </div>
+        </div>
+        <div class="sub_header2">
+            <button onclick="showForm('diabetes')">Predict Diabetes</button>
+            <button onclick="showForm('heart')">Predict Heart Disease</button>
+            <button onclick="showForm('cancer')">Predict Cancer</button>
+        </div>
+    </div>
+
+    <div class="predict-form">
+        <div id="diabetes-form" class="form-container">
+            <h2>Diabetes Prediction</h2>
+            <form id="prediction-form-diabetes" method="POST" action="/predict_diabetes">
+                <label for="diabetes-pregnency">PREGNENCIES</label>
+                <input type="text" id="diabetes-pregnency" name="pregnency">
+                <label for="diabetes-glucose">GLUCOSE</label>
+                <input type="text" id="diabetes-glucose" name="glucose">
+                <label for="diabetes-bp">BLOOD PRESSURE</label>
+                <input type="text" id="diabetes-bp" name="bp">
+                <label for="diabetes-st">SKIN THICKNESS</label>
+                <input type="text" id="diabetes-st" name="st">
+                <label for="diabetes-insulin">INSULIN</label>
+                <input type="text" id="diabetes-insulin" name="insulin">
+                <label for="diabetes-bmi">BMI</label>
+                <input type="text" id="diabetes-bmi" name="bmi">
+                <label for="diabetes-dpf">DIABETES PEDIGREE FUNCTION</label>
+                <input type="text" id="diabetes-dpf" name="dpf">
+                <label for="diabetes-age">AGE</label>
+                <input type="text" id="diabetes-age" name="age">
+                <input type="submit" value="Predict">
+            </form>
+            <h3 id="result-diabetes"></h3>
+        </div>
+    
+        <div id="heart-form" class="form-container">
+            <h2>Heart Disease Prediction</h2>
+            <form id="prediction-form-heart" method="POST" action="/predict_heart">
+                <label for="heart-age">AGE</label>
+                <input type="text" id="heart-age" name="age">
+                <label for="heart-gender">GENDER (0 for Female, 1 for Male)</label>
+                <input type="text" id="heart-gender" name="gender">
+                <label for="heart-cholesterol">CHOLESTEROL</label>
+                <input type="text" id="heart-cholesterol" name="cholesterol">
+                <label for="heart-blood_pressure">BLOOD PRESSURE</label>
+                <input type="text" id="heart-blood_pressure" name="blood_pressure">
+                <label for="heart-rate">HEART RATE</label>
+                <input type="text" id="heart-rate" name="heart_rate">
+                <label for="heart-smoking">SMOKING (0 for Never, 1 for Former, 2 for Current)</label>
+                <input type="text" id="heart-smoking" name="smoking">
+                <label for="heart-alcohol_intake">ALCOHOL INTAKE (0 for Low, 1 for Moderate, 2 for Heavy)</label>
+                <input type="text" id="heart-alcohol_intake" name="alcohol_intake">
+                <label for="heart-exercise_hours">EXERCISE HOURS PER WEEK</label>
+                <input type="text" id="heart-exercise_hours" name="exercise_hours">
+                <label for="heart-family_history">FAMILY HISTORY (0 for No, 1 for Yes)</label>
+                <input type="text" id="heart-family_history" name="family_history">
+                <label for="heart-diabetes">DIABETES (0 for No, 1 for Yes)</label>
+                <input type="text" id="heart-diabetes" name="diabetes">
+                <label for="heart-obesity">OBESITY (0 for No, 1 for Yes)</label>
+                <input type="text" id="heart-obesity" name="obesity">
+                <label for="heart-stress_level">STRESS LEVEL</label>
+                <input type="text" id="heart-stress_level" name="stress_level">
+                <label for="heart-blood_sugar">BLOOD SUGAR</label>
+                <input type="text" id="heart-blood_sugar" name="blood_sugar">
+                <label for="heart-exercise_induced_angina">EXERCISE INDUCED ANGINA (0 for No, 1 for Yes)</label>
+                <input type="text" id="heart-exercise_induced_angina" name="exercise_induced_angina">
+                <label for="heart-chest_pain_type">CHEST PAIN TYPE (0 for Atypical Angina, 1 for Typical Angina, 2 for Non-anginal Pain, 3 for Asymptomatic)</label>
+                <input type="text" id="heart-chest_pain_type" name="chest_pain_type">
+                <input type="submit" value="Predict">
+            </form>
+            <h3 id="result-heart"></h3>
+        </div>
+    
+        <div id="cancer-form" class="form-container">
+            <h2>Cancer Prediction</h2>
+            <form id="prediction-form-cancer" method="POST" action="/predict_cancer">
+                <label for="cancer-age">AGE</label>
+                <input type="text" id="cancer-age" name="age">
+                <label for="cancer-gender">GENDER</label>
+                <input type="text" id="cancer-gender" name="gender">
+                <label for="cancer-bmi">BMI</label>
+                <input type="text" id="cancer-bmi" name="bmi">
+                <label for="cancer-smoking">SMOKING</label>
+                <input type="text" id="cancer-smoking" name="smoking">
+                <label for="cancer-geneticrisk">GENETIC RISK</label>
+                <input type="text" id="cancer-geneticrisk" name="geneticrisk">
+                <label for="cancer-physicalactivity">PHYSICAL ACTIVITY</label>
+                <input type="text" id="cancer-physicalactivity" name="physicalactivity">
+                <label for="cancer-alcoholintake">ALCOHOL INTAKE</label>
+                <input type="text" id="cancer-alcoholintake" name="alcoholintake">
+                <label for="cancer-cancerhistory">CANCER HISTORY</label>
+                <input type="text" id="cancer-cancerhistory" name="cancerhistory">
+                <input type="submit" value="Predict">
+            </form>
+            <h3 id="result-cancer"></h3>
+        </div>
+    </div>
+
+
+    
+
+    <script>
+        function showForm(formId) {
+            document.getElementById('diabetes-form').style.display = 'none';
+            document.getElementById('heart-form').style.display = 'none';
+            document.getElementById('cancer-form').style.display = 'none';
+            document.getElementById(formId + '-form').style.display = 'block';
+        }
+
+        document.getElementById('prediction-form-diabetes').onsubmit = async (e) => {
+            e.preventDefault();
+            const pregnency = document.getElementById('diabetes-pregnency').value;
+            const glucose = document.getElementById('diabetes-glucose').value;
+            const bp = document.getElementById('diabetes-bp').value;
+            const st = document.getElementById('diabetes-st').value;
+            const insulin = document.getElementById('diabetes-insulin').value;
+            const bmi = document.getElementById('diabetes-bmi').value;
+            const dpf = document.getElementById('diabetes-dpf').value;
+            const age = document.getElementById('diabetes-age').value;
+
+            const features = [pregnency, glucose, bp, st, insulin, bmi, dpf, age].map(Number);
+
+            const response = await fetch('/predict_diabetes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ features })
+            });
+            const result = await response.json();
+            document.getElementById('result-diabetes').innerText = `Prediction: ${result.prediction}`;
+        };
+
+        document.getElementById('prediction-form-heart').onsubmit = async (e) => {
+            e.preventDefault();
+            const age = document.getElementById('heart-age').value;
+            const gender = document.getElementById('heart-gender').value;
+            const cholesterol = document.getElementById('heart-cholesterol').value;
+            const blood_pressure = document.getElementById('heart-blood_pressure').value;
+            const heart_rate = document.getElementById('heart-rate').value;
+            const smoking = document.getElementById('heart-smoking').value;
+            const alcohol_intake = document.getElementById('heart-alcohol_intake').value;
+            const exercise_hours = document.getElementById('heart-exercise_hours').value;
+            const family_history = document.getElementById('heart-family_history').value;
+            const diabetes = document.getElementById('heart-diabetes').value;
+            const obesity = document.getElementById('heart-obesity').value;
+            const stress_level = document.getElementById('heart-stress_level').value;
+            const blood_sugar = document.getElementById('heart-blood_sugar').value;
+            const exercise_induced_angina = document.getElementById('heart-exercise_induced_angina').value;
+            const chest_pain_type = document.getElementById('heart-chest_pain_type').value;
+
+            const features = [age, gender, cholesterol, blood_pressure, heart_rate, smoking, alcohol_intake, exercise_hours, family_history, diabetes, obesity, stress_level, blood_sugar, exercise_induced_angina, chest_pain_type].map(Number);
+
+            const response = await fetch('/predict_heart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ features })
+            });
+            const result = await response.json();
+            document.getElementById('result-heart').innerText = `Prediction: ${result.prediction}`;
+        };
+
+        document.getElementById('prediction-form-cancer').onsubmit = async (e) => {
+            e.preventDefault();
+            const age = document.getElementById('cancer-age').value;
+            const gender = document.getElementById('cancer-gender').value;
+            const bmi = document.getElementById('cancer-bmi').value;
+            const smoking = document.getElementById('cancer-smoking').value;
+            const geneticrisk = document.getElementById('cancer-geneticrisk').value;
+            const physicalactivity = document.getElementById('cancer-physicalactivity').value;
+            const alcoholintake = document.getElementById('cancer-alcoholintake').value;
+            const cancerhistory = document.getElementById('cancer-cancerhistory').value;
+
+            const features = [age, gender, bmi, smoking, geneticrisk, physicalactivity, alcoholintake, cancerhistory].map(Number);
+
+            const response = await fetch('/predict_cancer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ features })
+            });
+            const result = await response.json();
+            document.getElementById('result-cancer').innerText = `Prediction: ${result.prediction}`;
+        };
+    </script>
+</body>
+</html>
