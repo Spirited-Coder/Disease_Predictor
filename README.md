@@ -53,7 +53,7 @@ This project is a web application that predicts the likelihood of cancer, diabet
 
 5. **Run the application**
     ```sh
-    flask run
+    python script.py
     ```
 
     The application will be available at `http://127.0.0.1:5000`.
